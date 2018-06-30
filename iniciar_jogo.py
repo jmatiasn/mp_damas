@@ -19,6 +19,7 @@ VERMELHO = (120, 0, 0)
 VERDE_ESCURO = (0, 120, 0)
 VERDE_CLARO = (0, 255, 0)
 VERMELHO_CLARO = (255, 0, 0)
+AMARELO_CLARO = (255, 255, 0)
 AZUL = (0, 0, 255)
 COR_FUNDO = (54, 54, 54)
 COR_TABULEIRO = (0, 31, 0)
@@ -42,8 +43,8 @@ class Jogo:
 		self.matriz_jogadores = [['x','-','x','-','x','-','x','-'],
 							    ['-','x','-','x','-','x','-','x'],
 				  			    ['x','-','x','-','x','-','x','-'],
-							    ['-','-','-','-','-','-','-','-'],
-							    ['-','-','-','-','-','-','-','-'],
+							    ['-','i','-','i','-','i','-','i'],
+							    ['i','-','i','-','i','-','i','-'],
 							    ['-','o','-','o','-','o','-','o'],
 							    ['o','-','o','-','o','-','o','-'],
 							    ['-','o','-','o','-','o','-','o']]
@@ -293,19 +294,19 @@ class Jogo:
 				if self.matriz_jogadores[linha_atual][coluna_atual] == 'o':
 					if linha_atual > 0:
 						if coluna_atual < 7:
-							if self.matriz_jogadores[linha_atual - 1][coluna_atual + 1] == '-':
+							if self.matriz_jogadores[linha_atual - 1][coluna_atual + 1] == 'i':
 								movimentos.append([linha_atual - 1, coluna_atual + 1])
 						if coluna_atual > 0:
-							if self.matriz_jogadores[linha_atual - 1][coluna_atual - 1] == '-':
+							if self.matriz_jogadores[linha_atual - 1][coluna_atual - 1] == 'i':
 								movimentos.append([linha_atual - 1, coluna_atual - 1])
-				
+
 				elif self.matriz_jogadores[linha_atual][coluna_atual] == 'x':
 					if linha_atual < 7:
 						if coluna_atual < 7:
-							if self.matriz_jogadores[linha_atual + 1][coluna_atual + 1] == '-':
+							if self.matriz_jogadores[linha_atual + 1][coluna_atual + 1] == 'i':
 								movimentos.append([linha_atual + 1, coluna_atual + 1])
 						if coluna_atual > 0:
-							if self.matriz_jogadores[linha_atual + 1][coluna_atual - 1] == '-':
+							if self.matriz_jogadores[linha_atual + 1][coluna_atual - 1] == 'i':
 								movimentos.append([linha_atual + 1, coluna_atual - 1])
 			elif self.matriz_jogadores[linha_atual][coluna_atual].isupper():
 				conta_linha = linha_atual
@@ -313,7 +314,7 @@ class Jogo:
 				while True:
 					if conta_linha - 1 < 0 or conta_coluna - 1 < 0: break
 					else:
-						if self.matriz_jogadores[conta_linha - 1][conta_coluna - 1] == '-':
+						if self.matriz_jogadores[conta_linha - 1][conta_coluna - 1] == 'i':
 							movimentos.append([conta_linha - 1, conta_coluna - 1])
 						else: break
 					conta_linha -= 1
@@ -324,7 +325,7 @@ class Jogo:
 				while True:
 					if conta_linha - 1 < 0 or conta_coluna + 1 > 7: break
 					else:
-						if self.matriz_jogadores[conta_linha - 1][conta_coluna + 1] == '-':
+						if self.matriz_jogadores[conta_linha - 1][conta_coluna + 1] == 'i':
 							movimentos.append([conta_linha - 1, conta_coluna + 1])
 						else: break
 					conta_linha -= 1
@@ -335,7 +336,7 @@ class Jogo:
 				while True:
 					if conta_linha + 1 > 7 or conta_coluna + 1 > 7: break
 					else:
-						if self.matriz_jogadores[conta_linha + 1][conta_coluna + 1] == '-':
+						if self.matriz_jogadores[conta_linha + 1][conta_coluna + 1] == 'i':
 							movimentos.append([conta_linha + 1, conta_coluna + 1])
 						else: break
 					conta_linha += 1
@@ -346,12 +347,12 @@ class Jogo:
 				while True:
 					if conta_linha + 1 > 7 or conta_coluna - 1 < 0: break
 					else:
-						if self.matriz_jogadores[conta_linha + 1][conta_coluna - 1] == '-':
+						if self.matriz_jogadores[conta_linha + 1][conta_coluna - 1] == 'i':
 							movimentos.append([conta_linha + 1, conta_coluna - 1])
 						else: break
 					conta_linha += 1
 					conta_coluna -= 1
-				
+
 		return movimentos, pulos
 
 
@@ -362,7 +363,7 @@ class Jogo:
 		char = self.matriz_jogadores[linha_atual][coluna_atual]
 
 		self.matriz_jogadores[linha_destino][coluna_destino] = char
-		self.matriz_jogadores[linha_atual][coluna_atual] = '-'
+		self.matriz_jogadores[linha_atual][coluna_atual] = 'i'
 
 		if pulo:
 			self.pulando = True
@@ -374,7 +375,7 @@ class Jogo:
 				self.matriz_jogadores[linha_destino][coluna_destino] = char.upper()
 
 		if pulo:
-			self.matriz_jogadores[pulo[0]][pulo[1]] = '-'
+			self.matriz_jogadores[pulo[0]][pulo[1]] = 'i'
 			self.cedula_selecionada = [linha_destino, coluna_destino]
 			self.pulando = True
 
@@ -434,7 +435,7 @@ class Jogo:
 			x = 0
 			for c in range(len(matriz[l])):
 				if matriz[l][c] == '#':
-					pygame.draw.rect(display, COR_TABULEIRO, (x, y, 75, 75))
+					cria_campo_tabuleiro((x, y, 75, 75), COR_TABULEIRO, AMARELO_CLARO)
 				else:
 					pygame.draw.rect(display, BRANCO, (x, y, 75, 75))
 				x += 75
@@ -484,23 +485,28 @@ class Jogo:
 		for l in range(len(self.matriz_jogadores)):
 			for c in range(len(self.matriz_jogadores[l])):
 				elemento = self.matriz_jogadores[l][c]
-				if elemento != '-':
-					x = ALTURA / 8 * c + ALTURA / 16
-					y = ALTURA / 8 * l + ALTURA / 16
 
+				x = ALTURA / 8 * c + ALTURA / 16
+				y = ALTURA / 8 * l + ALTURA / 16
+
+				if elemento != '-':
 					if elemento.lower() == 'x':
 						pygame.draw.circle(display, VERMELHO, (x, y), 20, 0)
 						if elemento == 'X':
 							pygame.draw.circle(display, PRETO, (x, y), 10, 0)
 							pygame.draw.circle(display, AZUL, (x, y), 5, 0)
-					else:
+					elif elemento.lower() == 'o':
 						pygame.draw.circle(display, BRANCO, (x, y), 20, 0)
 						if elemento == 'O':
 							pygame.draw.circle(display, PRETO, (x, y), 10, 0)
 							pygame.draw.circle(display, AZUL, (x, y), 5, 0)
+					else:
+						if elemento.lower() == 'i':
+							pygame.draw.circle(display, CINZA, (x, y), 20, 0)
+
 
 		fonte = pygame.font.Font(None, 20)
-		
+
 		x = sum([contador.count('x') + contador.count('X') for contador in self.matriz_jogadores])
 		o = sum([contador.count('o') + contador.count('O') for contador in self.matriz_jogadores])
 
@@ -550,6 +556,15 @@ def cria_botao(msg, sqr, cor1, cor2, cor_texto, acao=None):
 	surface_texto, rect_texto = text_objects(msg, fontePequena, cor_texto)
 	rect_texto.center = (sqr[0] + 60, sqr[1] + 20)
 	display.blit(surface_texto, rect_texto)
+
+def cria_campo_tabuleiro(sqr, cor1, cor2):
+	mouse = pygame.mouse.get_pos()
+	clique = pygame.mouse.get_pressed()
+
+	if sqr[0] + sqr[2] > mouse[0] > sqr[0] and sqr[1] + sqr[3] > mouse[1] > sqr[1]:
+		pygame.draw.rect(display, cor2, sqr)
+	else:
+		pygame.draw.rect(display, cor1, sqr)
 
 def creditos():
 	sair = False
@@ -611,7 +626,7 @@ def regras():
 		info8 = fonte.render('Duas ou mais pecas juntas, na mesma diagonal, nao podem ser capturadas.', False, (VERDE_ESCURO))
 		info9 = fonte.render('A peca e a dama podem capturar tanto para frente como para tras.', False, (AZUL))
 		info10 = fonte.render('O movimento de captura pode ser encadeado sem que o jogador passe a vez.', False, (AZUL))
-		
+
 		game1 = fonte.render('Durante o jogo, ao clicar em uma peca, sera exibido em verde os movimentos', False, (VERMELHO))
 		game2 = fonte.render('possiveis da mesma. Se nada acontecer ao clicar em uma peca, significa que', False, (VERMELHO))
 		game3 = fonte.render('ela nao tem movimentos possiveis ou o turno pertence ao outro jogador.', False, (VERMELHO))
@@ -628,7 +643,7 @@ def regras():
 		display.blit(info8, (5, 245))
 		display.blit(info9, (5, 265))
 		display.blit(info10, (5, 295))
-		
+
 		display.blit(game1, (5, 315))
 		display.blit(game2, (5, 335))
 		display.blit(game3, (5, 360))
