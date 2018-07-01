@@ -129,7 +129,7 @@ class Jogo:
 		jogador = self.jogadores[self.turno % 2]
 		index = self.jogadores.index(jogador)
 
-		array = [jogador.lower(), jogador.upper(), '-']
+		array = [jogador.lower(), jogador.upper(), 'i']
 
 		if self.matriz_jogadores[l][c].islower() and self.matriz_jogadores[l][c] == jogador and \
 		self.turno % 2 == index:
@@ -140,7 +140,7 @@ class Jogo:
 							l_c = c + 1
 
 							if l_x - 1 >= 0 and l_c + 1 <= 7:
-								if self.matriz_jogadores[l_x - 1][l_c + 1] == '-':
+								if self.matriz_jogadores[l_x - 1][l_c + 1] == 'i':
 									obrigatorios.append([l_x - 1, l_c + 1])
 									posicao_cedula_pulada.append((l_x, l_c))
 					if c > 0:
@@ -149,7 +149,7 @@ class Jogo:
 							l_c = c - 1
 
 							if l_x - 1 >= 0 and l_c - 1 >= 0:
-								if self.matriz_jogadores[l_x - 1][l_c - 1] == '-':
+								if self.matriz_jogadores[l_x - 1][l_c - 1] == 'i':
 									obrigatorios.append([l_x - 1, l_c - 1])
 									posicao_cedula_pulada.append((l_x, l_c))
 				if l < 7:
@@ -159,7 +159,7 @@ class Jogo:
 							l_c = c + 1
 
 							if l_x + 1 <= 7 and l_c + 1 <= 7:
-								if self.matriz_jogadores[l_x + 1][l_c + 1] == '-':
+								if self.matriz_jogadores[l_x + 1][l_c + 1] == 'i':
 									obrigatorios.append([l_x + 1, l_c + 1])
 									posicao_cedula_pulada.append((l_x, l_c))
 					if c > 0:
@@ -168,7 +168,7 @@ class Jogo:
 							l_c = c - 1
 
 							if l_x + 1 <= 7 and l_c - 1 >= 0:
-								if self.matriz_jogadores[l_x + 1][l_c - 1] == '-':
+								if self.matriz_jogadores[l_x + 1][l_c - 1] == 'i':
 									obrigatorios.append([l_x + 1, l_c - 1])
 									posicao_cedula_pulada.append((l_x, l_c))
 
@@ -186,13 +186,13 @@ class Jogo:
 							l_c = conta_coluna - 1
 
 							if l_x - 1 >= 0 and l_c - 1 >= 0:
-								if self.matriz_jogadores[l_x - 1][l_c - 1] == '-':
+								if self.matriz_jogadores[l_x - 1][l_c - 1] == 'i':
 									posicao_cedula_pulada.append((l_x, l_c))
 									while True:
 										if l_x - 1 < 0 or l_c - 1 < 0:
 											break
 										else:
-											if self.matriz_jogadores[l_x - 1][l_c - 1] == '-':
+											if self.matriz_jogadores[l_x - 1][l_c - 1] == 'i':
 												obrigatorios.append([l_x - 1, l_c - 1])
 											else:
 												break
@@ -212,13 +212,13 @@ class Jogo:
 							l_c = conta_coluna + 1
 
 							if l_x - 1 >= 0 and l_c + 1 <= 7:
-								if self.matriz_jogadores[l_x - 1][l_c + 1] == '-':
+								if self.matriz_jogadores[l_x - 1][l_c + 1] == 'i':
 									posicao_cedula_pulada.append((l_x, l_c))
 									while True:
 										if l_x - 1 < 0 or l_c + 1 > 7:
 											break
 										else:
-											if self.matriz_jogadores[l_x -1][l_c + 1] == '-':
+											if self.matriz_jogadores[l_x -1][l_c + 1] == 'i':
 												obrigatorios.append([l_x - 1, l_c + 1])
 											else:
 												break
@@ -238,13 +238,13 @@ class Jogo:
 							l_c = conta_coluna + 1
 
 							if l_x + 1 <= 7 and l_c + 1 <= 7:
-								if self.matriz_jogadores[l_x + 1][l_c + 1] == '-':
+								if self.matriz_jogadores[l_x + 1][l_c + 1] == 'i':
 									posicao_cedula_pulada.append((l_x, l_c))
 									while True:
 										if l_x + 1 > 7 or l_c + 1 > 7:
 											break
 										else:
-											if self.matriz_jogadores[l_x + 1][l_c + 1] == '-':
+											if self.matriz_jogadores[l_x + 1][l_c + 1] == 'i':
 												obrigatorios.append([l_x + 1, l_c + 1])
 											else:
 												break
@@ -264,13 +264,13 @@ class Jogo:
 							l_c = conta_coluna - 1
 
 							if l_x + 1 <= 7 and l_c - 1 >= 0:
-								if self.matriz_jogadores[l_x + 1][l_c - 1] == '-':
+								if self.matriz_jogadores[l_x + 1][l_c - 1] == 'i':
 									posicao_cedula_pulada.append((l_x, l_c))
 									while True:
 										if l_x + 1 > 7 or l_c - 1 < 0:
 											break
 										else:
-											if self.matriz_jogadores[l_x + 1][l_c - 1] == '-':
+											if self.matriz_jogadores[l_x + 1][l_c - 1] == 'i':
 												obrigatorios.append([l_x + 1, l_c - 1])
 											else:
 												break
@@ -702,13 +702,25 @@ def menu_jogo():
 		rect_texto.center = ((LARGURA / 2), ALTURA / 3)
 		display.blit(surface_texto, rect_texto)
 
-		cria_botao("INICIAR",(LARGURA - 760, ALTURA / 2, 120, 40), VERDE_CLARO, VERDE_ESCURO, BRANCO, loop_jogo)
+		cria_botao("INICIAR",(LARGURA - 760, ALTURA / 2, 120, 40), VERDE_CLARO, VERDE_ESCURO, BRANCO, loop_jogo_normal)
+		cria_botao("COMPETITIVO",(LARGURA - 760, ALTURA / 2 + 120, 120, 40), VERMELHO_CLARO, VERDE_ESCURO, BRANCO, loop_jogo_competitivo)
 		cria_botao("MANUAL",(LARGURA - 560, ALTURA / 2, 120, 40), BRANCO, CINZA, PRETO, regras)
 		cria_botao("CREDITOS",(LARGURA - 360, ALTURA / 2, 120, 40), BRANCO, CINZA, PRETO, creditos)
 		cria_botao("SAIR",(LARGURA - 160, ALTURA / 2, 120, 40), VERMELHO_CLARO, VERMELHO, BRANCO, sair)
 
 		pygame.display.update()
 		clock.tick(15)
+
+def loop_jogo_normal():
+	global COR_TABULEIRO
+	COR_TABULEIRO = (0, 31, 0)
+	loop_jogo()
+
+def loop_jogo_competitivo():
+	global COR_TABULEIRO
+	COR_TABULEIRO = (25,0,51)
+	loop_jogo()
+
 
 # SAIR DO JOGO
 def sair():
